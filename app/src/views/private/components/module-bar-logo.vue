@@ -33,7 +33,7 @@ export default defineComponent({
 
 		const customLogoPath = computed<string | null>(() => {
 			if (settingsStore.settings === null) return null;
-			if (!settingsStore.settings?.project_logo) return null;
+			if (!settingsStore.settings?.project_logo) return '/admin/img/logo.png';
 			return '/assets/' + settingsStore.settings.project_logo;
 		});
 

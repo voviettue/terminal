@@ -194,7 +194,12 @@ function addField(field: FieldTree) {
 function findTree(tree: FieldTree[] | undefined, fieldSections: string[]): FieldTree | undefined {
 	if (tree === undefined) return undefined;
 
-	const fieldObject = tree.find((f) => f.field === fieldSections[0]);
+	const fields = tree.reduce(
+		(resulst, e) => (resulst = e?.group === true ? resulst.concat(e.children) : resulst.concat(e)),
+		[]
+	);
+
+	const fieldObject = fields.find((f) => f.field === fieldSections[0]);
 
 	if (fieldObject === undefined) return undefined;
 	if (fieldSections.length === 1) return fieldObject;

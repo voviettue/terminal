@@ -38,7 +38,7 @@
 					{{
 						t('referential_action_field_label_o2m', {
 							collection: relatedCollection || 'related',
-						})
+						}).replace('directus_', 'system_')
 					}}
 				</div>
 				<v-select
@@ -46,14 +46,14 @@
 					:placeholder="t('choose_action') + '...'"
 					:items="[
 						{
-							text: t('referential_action_set_null', { field: relatedField }),
+							text: t('referential_action_set_null', { field: relatedField }).replace('directus_', 'system_'),
 							value: 'nullify',
 						},
 						{
 							text: t('referential_action_cascade', {
 								collection: relatedCollection,
 								field: relatedField,
-							}),
+							}).replace('directus_', 'system_'),
 							value: 'delete',
 						},
 					]"
@@ -65,7 +65,7 @@
 					{{
 						t('referential_action_field_label_m2o', {
 							collection: collection || 'related',
-						})
+						}).replace('directus_', 'system_')
 					}}
 				</div>
 				<v-select
@@ -74,18 +74,18 @@
 					:placeholder="t('choose_action') + '...'"
 					:items="[
 						{
-							text: t('referential_action_set_null', { field: relatedField }),
+							text: t('referential_action_set_null', { field: relatedField }).replace('directus_', 'system_'),
 							value: 'SET NULL',
 						},
 						{
-							text: t('referential_action_set_default', { field: relatedField }),
+							text: t('referential_action_set_default', { field: relatedField }).replace('directus_', 'system_'),
 							value: 'SET DEFAULT',
 						},
 						{
 							text: t('referential_action_cascade', {
 								collection: collection,
 								field: relatedField,
-							}),
+							}).replace('directus_', 'system_'),
 							value: 'CASCADE',
 						},
 						{

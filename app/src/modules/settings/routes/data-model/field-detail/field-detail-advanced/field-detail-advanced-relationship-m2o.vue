@@ -44,7 +44,7 @@
 					{{
 						t('referential_action_field_label_m2o', {
 							collection: relatedCollection || 'related',
-						})
+						}).replace('directus_', 'system_')
 					}}
 				</div>
 				<v-select
@@ -133,22 +133,22 @@ export default defineComponent({
 		const onDeleteOptions = computed(() =>
 			[
 				{
-					text: t('referential_action_set_null', { field: currentField.value }),
+					text: t('referential_action_set_null', { field: currentField.value }).replace('directus_', 'system_'),
 					value: 'SET NULL',
 				},
 				{
-					text: t('referential_action_set_default', { field: currentField.value }),
+					text: t('referential_action_set_default', { field: currentField.value }).replace('directus_', 'system_'),
 					value: 'SET DEFAULT',
 				},
 				{
 					text: t('referential_action_cascade', {
 						collection: collection.value,
 						field: currentField.value,
-					}),
+					}).replace('directus_', 'system_'),
 					value: 'CASCADE',
 				},
 				{
-					text: t('referential_action_no_action', { field: currentField.value }),
+					text: t('referential_action_no_action', { field: currentField.value }).replace('directus_', 'system_'),
 					value: 'NO ACTION',
 				},
 			].filter((o) => !(o.value === 'SET NULL' && field.value.schema?.is_nullable === false))

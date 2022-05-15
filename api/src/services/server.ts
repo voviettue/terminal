@@ -48,6 +48,7 @@ export class ServerService {
 			],
 		});
 
+		projectInfo.project_name = projectInfo.project_name.replace('Directus', 'Pangara')
 		info.project = projectInfo;
 
 		if (this.accountability?.user) {
@@ -68,10 +69,11 @@ export class ServerService {
 		if (this.accountability?.admin === true) {
 			const { osType, osVersion } = getOSInfo();
 
-			info.directus = {
-				version,
-			};
-
+			// info.directus = {
+			// 	version,
+			// };
+			info.coreVersion = version;
+			info.version = process.env.PLATFORM_VERSION || '';
 			info.node = {
 				version: process.versions.node,
 				uptime: Math.round(process.uptime()),
@@ -315,7 +317,7 @@ export class ServerService {
 
 					if (
 						checks[`storage:${location}:responseTime`][0].observedValue! >
-							checks[`storage:${location}:responseTime`][0].threshold! &&
+						checks[`storage:${location}:responseTime`][0].threshold! &&
 						checks[`storage:${location}:responseTime`][0].status !== 'error'
 					) {
 						checks[`storage:${location}:responseTime`][0].status = 'warn';

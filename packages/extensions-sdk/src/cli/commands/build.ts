@@ -66,6 +66,12 @@ export default async function build(options: BuildOptions): Promise<void> {
 
 		const extensionOptions = extensionManifest[EXTENSION_PKG_KEY];
 
+		// @TODO: Support building bundle extensions
+		if (Array.isArray(extensionOptions)) {
+			log(`Extension options is an array.`);
+			process.exit(1);
+		}
+
 		if (!isTypeIn(extensionOptions, EXTENSION_TYPES)) {
 			log(
 				`Extension type ${chalk.bold(

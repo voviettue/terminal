@@ -408,6 +408,18 @@ export class AuthenticationService {
 			await provider.logout(clone(user));
 
 			await this.knex.delete().from('directus_sessions').where('token', refreshToken);
+
+			emitter.emitAction(
+				'auth.logout',
+				{
+					user: record.id,
+				},
+				{
+					database: this.knex,
+					schema: this.schema,
+					accountability: this.accountability,
+				}
+			);
 		}
 	}
 

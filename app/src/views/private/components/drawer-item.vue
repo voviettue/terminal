@@ -56,12 +56,33 @@
 					/>
 				</div>
 			</template>
+
+			<file-preview
+				v-if="fileField"
+				:src="fileField.src"
+				:mime="fileField.type"
+				:width="fileField.width"
+				:height="fileField.height"
+				:title="fileField.title"
+				:in-modal="true"
+			/>
+
+			<v-form
+				v-model="internalEdits"
+				:disabled="disabled"
+				:loading="loading"
+				:initial-values="item"
+				:primary-key="primaryKey"
+				:fields="fields"
+				:validation-errors="!junctionField ? validationErrors : undefined"
+			/>
 		</div>
 	</v-drawer>
 </template>
 
 <script setup lang="ts">
-import api from '@/api';
+import api, { addTokenToURL } from '@/api';
+import { getRootPath } from '@/utils/get-root-path';
 import FilePreview from '@/views/private/components/file-preview.vue';
 import { merge, set } from 'lodash';
 import { computed, ref, toRefs, watch } from 'vue';
@@ -195,6 +216,7 @@ const template = computed(
 );
 
 const { file } = useFile();
+const { fileField } = useFileField();
 
 function useFile() {
 	const isDirectusFiles = computed(() => {
@@ -211,6 +233,20 @@ function useFile() {
 	});
 
 	return { file, isDirectusFiles };
+}
+
+function useFileField() {
+	const fileField = computed(() => {
+		if (!initialValues.value?.filesize || !initialValues.value?.type) return null;
+
+		const fileData = item.value;
+		if (!fileData) return null;
+
+		const src = addTokenToURL(getRootPath() + `assets/${fileData.id}?key=system-large-contain`);
+		return { ...fileData, src };
+	});
+
+	return { fileField };
 }
 
 function useActiveState() {

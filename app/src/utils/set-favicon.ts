@@ -25,14 +25,14 @@ export function setFavicon(color: string | null | undefined, hide = false): void
 	wrapper.innerHTML = icon.trim();
 
 	if (wrapper.firstChild) {
-		const iconSerialized = new XMLSerializer().serializeToString(wrapper.firstChild);
+		// const iconSerialized = new XMLSerializer().serializeToString(wrapper.firstChild);
 
-		const string = 'data:image/svg+xml;base64,' + window.btoa(iconSerialized);
+		// const string = 'data:image/svg+xml;base64,' + window.btoa(iconSerialized);
 
 		const link: HTMLLinkElement = document.querySelector("link[rel*='icon']") || document.createElement('link');
 		link.type = 'image/x-icon';
 		link.rel = 'icon';
-		link.href = string;
+		link.href = 'img/icons/favicon-32x32.png';
 		document.getElementsByTagName('head')[0].appendChild(link);
 	}
 }

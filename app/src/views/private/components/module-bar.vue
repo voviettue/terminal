@@ -24,6 +24,8 @@
 			</v-button>
 		</div>
 
+		<module-bar-changelog />
+
 		<module-bar-avatar />
 	</div>
 </template>
@@ -33,6 +35,7 @@ import { defineComponent, computed } from 'vue';
 import { getModules } from '@/modules/';
 import ModuleBarLogo from './module-bar-logo.vue';
 import ModuleBarAvatar from './module-bar-avatar.vue';
+import ModuleBarChangelog from './module-bar-changelog/';
 import { useSettingsStore } from '@/stores/settings';
 import { translate } from '@/utils/translate-object-values';
 import { MODULE_BAR_DEFAULT } from '@/constants';
@@ -42,6 +45,7 @@ export default defineComponent({
 	components: {
 		ModuleBarLogo,
 		ModuleBarAvatar,
+		ModuleBarChangelog,
 	},
 	setup() {
 		const settingsStore = useSettingsStore();

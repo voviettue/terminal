@@ -3,6 +3,7 @@ import fse from 'fs-extra';
 import {
 	ExtensionLocal,
 	ExtensionManifestRaw,
+	ExtensionOptionsRaw,
 	ExtensionPackage,
 	ExtensionPackageType,
 	ExtensionType,
@@ -19,6 +20,70 @@ import { pluralize } from '../pluralize';
 import { validateExtensionManifest } from '../validate-extension-manifest';
 import { isIn, isTypeIn } from '../array-helpers';
 
+async function resolveExtensions(
+	extensionOptions: any,
+	types: readonly ExtensionPackageType[],
+	extensionPath: string,
+	extensionName: string,
+	extensionManifest: ExtensionManifestRaw
+): Promise<ExtensionPackage[]> {
+	const extensions: ExtensionPackage[] = [];
+
+	if (extensionManifest.version === undefined) {
+		extensionManifest.version = '';
+	}
+
+	if (extensionOptions.type === undefined) {
+		extensionOptions.type = 'unknown';
+	}
+
+	if (isIn(extensionOptions.type, types)) {
+		if (isTypeIn(extensionOptions, PACKAGE_EXTENSION_TYPES)) {
+			const extensionChildren = Object.keys(extensionManifest.dependencies ?? {}).filter((dep) =>
+				EXTENSION_NAME_REGEX.test(dep)
+			);
+
+			const extension: ExtensionPackage = {
+				path: extensionPath,
+				name: extensionName,
+				version: extensionManifest.version,
+				type: extensionOptions.type,
+				host: extensionOptions.host,
+				children: extensionChildren,
+				local: false,
+			};
+
+			extensions.push(extension);
+			extensions.push(...(await resolvePackageExtensions(extension.children || [], extension.path, types)));
+		} else if (isTypeIn(extensionOptions, HYBRID_EXTENSION_TYPES)) {
+			extensions.push({
+				path: extensionPath,
+				name: extensionName,
+				version: extensionManifest.version,
+				type: extensionOptions['type'],
+				entrypoint: {
+					app: extensionOptions['path']['app'],
+					api: extensionOptions['path']['api'],
+				},
+				host: extensionOptions['host'],
+				local: false,
+			});
+		} else {
+			extensions.push({
+				path: extensionPath,
+				name: extensionName,
+				version: extensionManifest.version,
+				type: extensionOptions['type'],
+				entrypoint: extensionOptions['path'],
+				host: extensionOptions['host'],
+				local: false,
+			});
+		}
+	}
+
+	return extensions;
+}
+
 async function resolvePackageExtensions(
 	extensionNames: string[],
 	root: string,
@@ -34,50 +99,18 @@ async function resolvePackageExtensions(
 			throw new Error(`The extension manifest of "${extensionName}" is not valid.`);
 		}
 
-		const extensionOptions = extensionManifest[EXTENSION_PKG_KEY];
+		const extensionOptions: ExtensionOptionsRaw = extensionManifest[EXTENSION_PKG_KEY];
 
-		if (isIn(extensionOptions.type, types)) {
-			if (isTypeIn(extensionOptions, PACKAGE_EXTENSION_TYPES)) {
-				const extensionChildren = Object.keys(extensionManifest.dependencies ?? {}).filter((dep) =>
-					EXTENSION_NAME_REGEX.test(dep)
+		if (Array.isArray(extensionOptions)) {
+			for (const options of extensionOptions) {
+				extensions.push(
+					...(await resolveExtensions(options, types, extensionPath, options.name ?? extensionName, extensionManifest))
 				);
-
-				const extension: ExtensionPackage = {
-					path: extensionPath,
-					name: extensionName,
-					version: extensionManifest.version,
-					type: extensionOptions.type,
-					host: extensionOptions.host,
-					children: extensionChildren,
-					local: false,
-				};
-
-				extensions.push(extension);
-				extensions.push(...(await resolvePackageExtensions(extension.children || [], extension.path, types)));
-			} else if (isTypeIn(extensionOptions, HYBRID_EXTENSION_TYPES)) {
-				extensions.push({
-					path: extensionPath,
-					name: extensionName,
-					version: extensionManifest.version,
-					type: extensionOptions.type,
-					entrypoint: {
-						app: extensionOptions.path.app,
-						api: extensionOptions.path.api,
-					},
-					host: extensionOptions.host,
-					local: false,
-				});
-			} else {
-				extensions.push({
-					path: extensionPath,
-					name: extensionName,
-					version: extensionManifest.version,
-					type: extensionOptions.type,
-					entrypoint: extensionOptions.path,
-					host: extensionOptions.host,
-					local: false,
-				});
 			}
+		} else {
+			extensions.push(
+				...(await resolveExtensions(extensionOptions, types, extensionPath, extensionName, extensionManifest))
+			);
 		}
 	}
 

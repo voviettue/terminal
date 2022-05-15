@@ -32,7 +32,7 @@
 		</template>
 
 		<template v-if="disabled" #input>
-			<v-text-overflow :text="modelValue" />
+			<v-text-overflow :text="String(modelValue).replace('directus_', 'system_')" />
 		</template>
 	</v-input>
 </template>

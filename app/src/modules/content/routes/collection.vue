@@ -238,6 +238,12 @@
 						class="page-description"
 					/>
 				</sidebar-detail>
+				<sidebar-link
+					path="https://trello.com/b/RkgTZd9P/terminal-business-systems-roadmap"
+					icon="feedback"
+					:title="t('submit_feedback')"
+					close
+				/>
 				<layout-sidebar-detail v-model="layout">
 					<component :is="`layout-options-${layout || 'tabular'}`" v-bind="layoutState" />
 				</layout-sidebar-detail>
@@ -282,6 +288,7 @@ import LayoutSidebarDetail from '@/views/private/components/layout-sidebar-detai
 import ArchiveSidebarDetail from '@/views/private/components/archive-sidebar-detail.vue';
 import RefreshSidebarDetail from '@/views/private/components/refresh-sidebar-detail.vue';
 import ExportSidebarDetail from '@/views/private/components/export-sidebar-detail.vue';
+import SidebarLink from '../components/sidebar-link.vue';
 import FlowSidebarDetail from '@/views/private/components/flow-sidebar-detail.vue';
 import SearchInput from '@/views/private/components/search-input.vue';
 import BookmarkAdd from '@/views/private/components/bookmark-add.vue';
@@ -303,6 +310,7 @@ export default defineComponent({
 	components: {
 		ContentNavigation,
 		ContentNotFound,
+		SidebarLink,
 		LayoutSidebarDetail,
 		SearchInput,
 		BookmarkAdd,

@@ -1,0 +1,63 @@
+variables:
+  REGISTRY: 221168245729.dkr.ecr.eu-north-1.amazonaws.com
+  IMAGE: gigapress/core
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+  TAG_VERSION_REGEX: /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/
+
+stages:
+  - build
+  - delivery
+
+cache:
+  key:
+    files:
+      - pnpm-lock.yaml
+  paths:
+    - node_modules/
+    - .pnpm-store
+
+packing:
+  image: node:16
+  stage: build
+  before_script:
+    - export NODE_OPTIONS=--max_old_space_size=4096
+    - node -v
+    - curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm@7
+    - pnpm config set store-dir .pnpm-store
+    - pnpm -v
+    - pnpm install
+  script:
+    - pnpm -r build
+    - node docker/pack.js
+  artifacts:
+    expire_in: 1 hour
+    paths:
+      - dist/
+    when: on_success
+  only:
+    - tags
+    - TAG_VERSION_REGEX
+
+build:
+  image: docker:20
+  stage: delivery
+  services:
+    - docker:20-dind
+  before_script:
+    - AWS_ACCESS_KEY_ID=$CATEX_AWS_ACCESS_KEY_ID
+    - AWS_DEFAULT_REGION=$CATEX_AWS_DEFAULT_REGION
+    - AWS_SECRET_ACCESS_KEY=$CATEX_AWS_SECRET_ACCESS_KEY
+    - apk add --no-cache python3 py3-pip
+    - pip install awscli
+    - docker login -u AWS -p $(aws ecr get-login-password) $REGISTRY
+  script:
+    - docker build --no-cache -t $REGISTRY/$IMAGE:$CI_COMMIT_BRANCH --build-arg -f ./docker/Dockerfile .
+    - docker push $REGISTRY/$IMAGE:$CI_COMMIT_BRANCH
+  dependencies:
+    - packing
+  cache: []
+  only:
+    - tags
+    - TAG_VERSION_REGEX

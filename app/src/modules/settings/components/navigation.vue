@@ -16,12 +16,12 @@
 			</v-list-item-content>
 		</v-list-item>
 
-		<v-list-item href="https://github.com/directus/directus/releases" class="version">
+		<!-- <v-list-item href="https://github.com/directus/directus/releases" class="version">
 			<v-list-item-icon><v-icon name="directus" /></v-list-item-icon>
 			<v-list-item-content>
 				<v-text-overflow class="version" :text="`Directus ${version}`" />
 			</v-list-item-content>
-		</v-list-item>
+		</v-list-item> -->
 	</v-list>
 </template>
 
@@ -76,24 +76,32 @@ export default defineComponent({
 		];
 
 		const externalItems = computed(() => {
-			const bugReportParams = new URLSearchParams({
-				template: 'bug_report.yml',
-				'directus-version': parsedInfo.value?.directus.version ?? '',
-				'node-version': parsedInfo.value?.node.version ?? '',
-				'operating-system': `${parsedInfo.value?.os.type ?? ''} ${parsedInfo.value?.os.version ?? ''}`,
-			});
+			// const bugReportParams = new URLSearchParams({
+			// 	template: 'bug_report.yml',
+			// 	// 'directus-version': parsedInfo.value?.directus.version ?? '',
+			// 	'node-version': parsedInfo.value?.node.version ?? '',
+			// 	'operating-system': `${parsedInfo.value?.os.type ?? ''} ${parsedInfo.value?.os.version ?? ''}`,
+			// });
 
 			return [
 				{
-					icon: 'bug_report',
-					name: t('report_bug'),
-					href: `https://github.com/directus/directus/issues/new?${bugReportParams.toString()}`,
+					icon: 'feedback',
+					name: t('submit_feedback'),
+					href: `https://trello.com/b/RkgTZd9P/terminal-business-systems-roadmap`,
+					outline: true,
 				},
-				{
-					icon: 'new_releases',
-					name: t('request_feature'),
-					href: 'https://github.com/directus/directus/discussions/new',
-				},
+				// {
+				// 	icon: 'bug_report',
+				// 	name: t('report_bug'),
+				// 	href: `https://github.com/directus/directus/issues/new?${bugReportParams.toString()}`,
+				// 	outline: true,
+				// },
+				// {
+				// 	icon: 'new_releases',
+				// 	name: t('request_feature'),
+				// 	href: 'https://github.com/directus/directus/discussions/new',
+				// 	outline: true,
+				// },
 			];
 		});
 

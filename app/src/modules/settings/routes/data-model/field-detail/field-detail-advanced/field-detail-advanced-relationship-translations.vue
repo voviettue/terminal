@@ -45,7 +45,7 @@
 					{{
 						t('referential_action_field_label_o2m', {
 							collection: junctionCollection || '',
-						})
+						}).replace('directus_', 'system_')
 					}}
 				</div>
 				<v-select
@@ -56,14 +56,14 @@
 							text: t('referential_action_set_null', {
 								collection: junctionCollection,
 								field: junctionFieldCurrent,
-							}),
+							}).replace('directus_', 'system_'),
 							value: 'nullify',
 						},
 						{
 							text: t('referential_action_cascade', {
 								collection: junctionCollection,
 								field: junctionFieldCurrent,
-							}),
+							}).replace('directus_', 'system_'),
 							value: 'delete',
 						},
 					]"
@@ -84,18 +84,21 @@
 					:placeholder="t('choose_action') + '...'"
 					:items="[
 						{
-							text: t('referential_action_set_null', { field: junctionFieldCurrent }),
+							text: t('referential_action_set_null', { field: junctionFieldCurrent }).replace('directus_', 'system_'),
 							value: 'SET NULL',
 						},
 						{
-							text: t('referential_action_set_default', { field: junctionFieldCurrent }),
+							text: t('referential_action_set_default', { field: junctionFieldCurrent }).replace(
+								'directus_',
+								'system_'
+							),
 							value: 'SET DEFAULT',
 						},
 						{
 							text: t('referential_action_cascade', {
 								collection: junctionCollection,
 								field: junctionFieldCurrent,
-							}),
+							}).replace('directus_', 'system_'),
 							value: 'CASCADE',
 						},
 						{
@@ -111,7 +114,7 @@
 					{{
 						t('referential_action_field_label_m2o', {
 							collection: relatedCollection || 'related',
-						})
+						}).replace('directus_', 'system_')
 					}}
 				</div>
 				<v-select
@@ -120,18 +123,21 @@
 					:placeholder="t('choose_action') + '...'"
 					:items="[
 						{
-							text: t('referential_action_set_null', { field: junctionFieldRelated }),
+							text: t('referential_action_set_null', { field: junctionFieldRelated }).replace('directus_', 'system_'),
 							value: 'SET NULL',
 						},
 						{
-							text: t('referential_action_set_default', { field: junctionFieldRelated }),
+							text: t('referential_action_set_default', { field: junctionFieldRelated }).replace(
+								'directus_',
+								'system_'
+							),
 							value: 'SET DEFAULT',
 						},
 						{
 							text: t('referential_action_cascade', {
 								collection: junctionCollection,
 								field: junctionFieldRelated,
-							}),
+							}).replace('directus_', 'system_'),
 							value: 'CASCADE',
 						},
 						{

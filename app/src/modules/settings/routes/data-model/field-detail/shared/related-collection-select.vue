@@ -7,7 +7,7 @@
 		:nullable="false"
 		:disabled="disabled"
 		:placeholder="t('collection') + '...'"
-		@update:model-value="$emit('update:modelValue', $event)"
+		@update:model-value="$emit('update:modelValue', typeof $event !== 'string' ? $event : $event.replace('system_', 'directus_'))"
 	>
 		<template v-if="!disabled" #append>
 			<v-menu show-arrow placement="bottom-end">
@@ -24,7 +24,7 @@
 						@click="$emit('update:modelValue', availableCollection.collection)"
 					>
 						<v-list-item-content>
-							{{ availableCollection.collection }}
+							{{ availableCollection.collection.replace('directus_', 'system_') }}
 						</v-list-item-content>
 					</v-list-item>
 
@@ -40,7 +40,7 @@
 							@click="$emit('update:modelValue', systemCollection.collection)"
 						>
 							<v-list-item-content>
-								{{ systemCollection.collection }}
+								{{ systemCollection.collection.replace('directus_', 'system_') }}
 							</v-list-item-content>
 						</v-list-item>
 					</v-list-group>
@@ -49,7 +49,7 @@
 		</template>
 
 		<template v-if="disabled" #input>
-			<v-text-overflow :text="modelValue" />
+			<v-text-overflow :text="String(modelValue).replace('directus_', 'system_')" />
 		</template>
 	</v-input>
 </template>

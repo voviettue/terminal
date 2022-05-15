@@ -178,6 +178,12 @@
 			<sidebar-detail icon="info_outline" :title="t('information')" close>
 				<div v-md="t('page_help_collections_item')" class="page-description" />
 			</sidebar-detail>
+			<sidebar-link
+				path="https://trello.com/b/RkgTZd9P/terminal-business-systems-roadmap"
+				icon="feedback"
+				:title="t('submit_feedback')"
+				close
+			/>
 			<revisions-drawer-detail
 				v-if="
 					isNew === false &&
@@ -235,6 +241,7 @@ import { useCollection } from '@directus/shared/composables';
 import { useRouter } from 'vue-router';
 import ContentNavigation from '../components/navigation.vue';
 import ContentNotFound from './not-found.vue';
+import SidebarLink from '../components/sidebar-link.vue';
 
 interface Props {
 	collection: string;

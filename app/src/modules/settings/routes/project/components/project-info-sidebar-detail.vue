@@ -2,8 +2,12 @@
 	<sidebar-detail icon="info_outline" :title="t('information')" close>
 		<dl v-if="parsedInfo">
 			<div>
-				<dt>{{ t('directus_version') }}</dt>
-				<dd>{{ parsedInfo.directus.version }}</dd>
+				<dt>{{ 'App Version' }}</dt>
+				<dd>{{ parsedInfo.version }}</dd>
+			</div>
+			<div>
+				<dt>{{ 'Core Version' }}</dt>
+				<dd>{{ parsedInfo.coreVersion }}</dd>
 			</div>
 			<div>
 				<dt>{{ t('node_version') }}</dt>

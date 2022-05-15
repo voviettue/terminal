@@ -4,9 +4,11 @@ import prettyMS from 'pretty-ms';
 import { computed, ComputedRef, ref, Ref } from 'vue';
 
 type ServerInfo = {
-	directus: {
-		version: string;
-	};
+	// directus: {
+	// 	version: string;
+	// };
+	version: string;
+	coreVersion: string;
 	node: {
 		version: string;
 		uptime: number;
@@ -22,9 +24,9 @@ type ServerInfo = {
 type UsableProjectInfo = {
 	info: Ref<ServerInfo | undefined>;
 	parsedInfo: ComputedRef<{
-		directus: {
-			version: string;
-		};
+		// directus: {
+		// 	version: string;
+		// };
 		node: {
 			version: string;
 			uptime: string;
@@ -49,9 +51,11 @@ export function useProjectInfo(): UsableProjectInfo {
 		if (!info.value) return null;
 
 		return {
-			directus: {
-				version: info.value.directus.version,
-			},
+			// directus: {
+			// 	version: info.value.directus.version,
+			// },
+			version: info.value.version,
+			coreVersion: info.value.coreVersion,
 			node: {
 				version: info.value.node.version,
 				uptime: prettyMS(info.value.node.uptime * 1000),

@@ -75,18 +75,21 @@ export type ApiExtension = ApiExtensionCommon & (ExtensionLocalCommon | Extensio
 export type HybridExtension = HybridExtensionCommon & (ExtensionLocalCommon | ExtensionPackageCommon);
 export type Extension = ExtensionLocal | ExtensionPackage;
 
+export type ExtensionOptionsRaw = {
+	type?: string;
+	path?: string | { app: string; api: string };
+	source?: string | { app: string; api: string };
+	host?: string;
+	hidden?: boolean;
+	name?: string;
+};
+
 export type ExtensionManifestRaw = {
 	name?: string;
 	version?: string;
 	dependencies?: Record<string, string>;
 
-	[EXTENSION_PKG_KEY]?: {
-		type?: string;
-		path?: string | { app: string; api: string };
-		source?: string | { app: string; api: string };
-		host?: string;
-		hidden?: boolean;
-	};
+	[EXTENSION_PKG_KEY]?: ExtensionOptionsRaw | ExtensionOptionsRaw[];
 };
 
 type ExtensionOptionsCommon = {

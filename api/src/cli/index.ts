@@ -26,7 +26,7 @@ export async function createCli(): Promise<Command> {
 
 	await emitter.emitInit('cli.before', { program });
 
-	program.name('directus').usage('[command] [options]');
+	program.name('pangara').usage('[command] [options]');
 	program.version(pkg.version, '-v, --version');
 
 	program.command('start').description('Start the Directus API').action(startServer);

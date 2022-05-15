@@ -1,5 +1,5 @@
 <template>
-	<div id="directus" :style="brandStyle">
+	<div id="pangara" :style="brandStyle">
 		<transition name="fade">
 			<div v-if="hydrating" class="hydrating">
 				<v-progress-circular indeterminate />
@@ -44,7 +44,7 @@ export default defineComponent({
 
 		const brandStyle = computed(() => {
 			return {
-				'--brand': serverStore.info?.project?.project_color || 'var(--primary)',
+				'--brand': serverStore.info?.project?.project_color || '#000',
 			} as StyleValue;
 		});
 
@@ -55,7 +55,7 @@ export default defineComponent({
 			[() => serverStore.info?.project?.project_color ?? null, () => serverStore.info?.project?.project_logo ?? null],
 			() => {
 				const hasCustomLogo = !!serverStore.info?.project?.project_logo;
-				setFavicon(serverStore.info?.project?.project_color, hasCustomLogo);
+				setFavicon(serverStore.info?.project?.project_color || '#ff3331', hasCustomLogo);
 			},
 			{ immediate: true }
 		);
@@ -83,9 +83,8 @@ export default defineComponent({
 		watch(
 			() => serverStore.info?.project?.project_name,
 			(projectName) => {
-				document.title = projectName || 'Directus';
-			},
-			{ immediate: true }
+				document.title = projectName || 'Pangara';
+			}
 		);
 
 		const customCSS = computed(() => {
@@ -106,7 +105,7 @@ export default defineComponent({
 	height: 100%;
 }
 
-#directus {
+#pangara {
 	height: 100%;
 }
 

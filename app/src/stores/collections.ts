@@ -49,7 +49,7 @@ export const useCollectionsStore = defineStore({
 		prepareCollectionForApp(collection: CollectionRaw): Collection {
 			const icon = collection.meta?.icon || 'label';
 			const color = collection.meta?.color;
-			let name = formatTitle(collection.collection);
+			let name = formatTitle(collection.collection.replace('directus_', 'system_'));
 			const type = getCollectionType(collection);
 
 			if (collection.meta && !isNil(collection.meta.translations)) {

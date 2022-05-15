@@ -99,7 +99,7 @@ export class MailService {
 			.first();
 
 		return {
-			projectName: projectInfo?.project_name || 'Directus',
+			projectName: projectInfo?.project_name || 'Pangara',
 			projectColor: projectInfo?.project_color || '#546e7a',
 			projectLogo: getProjectLogoURL(projectInfo?.project_logo),
 			projectUrl: projectInfo?.project_url || '',

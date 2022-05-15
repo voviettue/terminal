@@ -847,7 +847,10 @@ export class ItemsService<Item extends AnyItem = AnyItem> implements AbstractSer
 					continue;
 				}
 
-				if (field.defaultValue) defaults[name] = field.defaultValue;
+				if (field.defaultValue) {
+					field.defaultValue = field.defaultValue.replace('Directus', 'Pangara');
+					defaults[name] = field.defaultValue;
+				}
 			}
 
 			return defaults as Partial<Item>;

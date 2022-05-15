@@ -92,4 +92,47 @@ describe('', () => {
 		};
 		expect(validateExtensionManifest(mockExtension)).toBe(true);
 	});
+
+	it('returns true when passed item has an array of valid extension options', () => {
+		const mockExtension = {
+			name: 'test',
+			version: '0.1',
+			'directus:extension': [
+				{
+					type: 'interface',
+					path: './',
+					source: 'test',
+					host: '^9.0.0',
+				},
+				{
+					type: 'hook',
+					path: './',
+					source: 'test',
+					host: '^9.0.0',
+				},
+			],
+		};
+
+		expect(validateExtensionManifest(mockExtension)).toBe(true);
+	});
+
+	it('returns false when passed item has an array of invalid extenion options that have no source, type, or host', () => {
+		const mockExtension = {
+			name: 'test',
+			version: '0.1',
+			'directus:extension': [
+				{
+					type: 'interface',
+					path: './',
+					source: 'test',
+					host: '^9.0.0',
+				},
+				{
+					type: 'hook',
+				},
+			],
+		};
+
+		expect(validateExtensionManifest(mockExtension)).toBe(false);
+	});
 });

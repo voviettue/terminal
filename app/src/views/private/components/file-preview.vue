@@ -10,6 +10,10 @@
 
 		<audio v-else-if="type === 'audio'" controls :src="authenticatedSrc" />
 
+		<div v-else-if="type === 'pdf'" class="pdf-viewer">
+			<iframe :src="src" frameborder="0"></iframe>
+		</div>
+
 		<div v-else class="fallback">
 			<v-icon-file :ext="type" />
 		</div>
@@ -30,33 +34,28 @@ interface Props {
 	title: string;
 	inModal?: boolean;
 }
-
 defineEmits(['click']);
-
 const props = withDefaults(defineProps<Props>(), { width: undefined, height: undefined, inModal: false });
-
 const imgError = ref(false);
-
-const type = computed<'image' | 'video' | 'audio' | string>(() => {
+const type = computed<'image' | 'video' | 'audio' | 'pdf' | null>(() => {
 	if (props.mime === null) return 'unknown';
 
 	if (props.mime.startsWith('image')) {
 		return 'image';
 	}
-
 	if (props.mime.startsWith('video')) {
 		return 'video';
 	}
-
 	if (props.mime.startsWith('audio')) {
 		return 'audio';
+	}
+	if (props.mime.includes('pdf')) {
+		return 'pdf';
 	}
 
 	return readableMimeType(props.mime, true) ?? 'unknown';
 });
-
 const isSVG = computed(() => props.mime.includes('svg'));
-
 const maxHeight = computed(() => Math.min(props.height ?? 528, 528) + 'px');
 const isSmall = computed(() => props.height < 528);
 
@@ -132,6 +131,36 @@ const authenticatedSrc = computed(() => addTokenToURL(getRootPath() + props.src)
 			background-color: transparent;
 			border-radius: 0;
 		}
+	}
+}
+
+.svg {
+	padding: 64px;
+	background-color: var(--background-normal);
+	border-radius: var(--border-radius);
+
+	&.max-size img {
+		// Max height - padding * 2
+		max-height: calc(75vh - 128px);
+	}
+}
+
+.pdf-viewer {
+	width: 100%;
+	position: relative;
+
+	&:before {
+		content: '';
+		display: block;
+		padding-top: calc(100% / (1 / 1.4142)); // A4 aspect ratio
+	}
+
+	iframe {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
 	}
 }
 </style>

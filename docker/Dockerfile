@@ -6,6 +6,7 @@ ARG TARGETPLATFORM
 
 WORKDIR /directus
 COPY /dist .
+
 RUN \
   if [ "$TARGETPLATFORM" = 'linux/arm64' ]; then \
   apk --no-cache add \

@@ -181,7 +181,7 @@ export default defineComponent({
 			props.fields?.map((field) => {
 				return {
 					...field,
-					name: formatTitle(field.name ?? field.field!),
+					name: field.name ?? field.field!,
 				};
 			})
 		);
