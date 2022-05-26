@@ -71,6 +71,8 @@ create_user: Create User
 delete_panel: Delete Panel
 create_webhook: Create Webhook
 create_translation_string: Create Translation String
+no_translation_string: No Translation Strings
+no_translation_string_copy: There are no translation strings yet.
 translation_string_key_placeholder: Translation string key...
 translation_string_translations_placeholder: Add a new translation
 edit_translation_string: Edit Translation String
@@ -332,12 +334,15 @@ revision_delta_deleted: Deleted
 revision_delta_reverted: Reverted
 revision_delta_other: Revision
 revision_delta_by: '{date} by {user}'
+presentation_text_values_cannot_be_reimported: "Uses presentation text, values can not be re-imported."
+download_page_as_csv: 'Download Page as CSV'
 private_user: Private User
 creation_preview: Creation Preview
 revision_preview: Revision Preview
 updates_made: Updates Made
 leave_comment: Leave a comment...
 post_comment_success: Comment posted
+post_comment_updated: Comment updated
 item_create_success: Item Created | Items Created
 item_update_success: Item Updated | Items Updated
 item_delete_success: Item Deleted | Items Deleted
@@ -458,6 +463,7 @@ created_on: Created On
 creating_collection_info: Name the collection and setup its unique “key” field...
 creating_collection_system: Enable and rename any of these optional fields.
 auto_increment_integer: Auto-incremented integer
+auto_increment_big_integer: Auto-incremented big integer
 generated_uuid: Generated UUID
 manual_string: Manually entered string
 save_and_create_new: Save and Create New
@@ -564,7 +570,9 @@ errors:
   INVALID_CREDENTIALS: Wrong username or password
   INVALID_OTP: Wrong one-time password
   INVALID_PAYLOAD: Invalid payload
+  INVALID_PROVIDER: User belongs to a different auth provider
   INVALID_QUERY: Invalid query
+  INVALID_USER: Failed to authenticate user
   ITEM_LIMIT_REACHED: Item limit reached
   ITEM_NOT_FOUND: Item not found
   ROUTE_NOT_FOUND: Not found
@@ -665,6 +673,7 @@ operators:
   nnull: Isn't null
   contains: Contains
   ncontains: Doesn't contain
+  icontains: Contains (insensitive)
   starts_with: Starts with
   nstarts_with: Doesn't start with
   ends_with: Ends with
@@ -1832,7 +1841,7 @@ panels:
     name: List
     description: Filter and list fields from a collection
   barchart:
-    name: Bar Chart,
+    name: Bar Chart
     description: Bar or column charts for comparing groups of values
     select_field: You must select a field.
     select_collection: You must select a collection.
@@ -1848,7 +1857,7 @@ panels:
     show_data_label: Show Data Label
     group_by: Grouped By
     group_and_function: You must include or omit both a group and a function.
-    y_axix_NaN: The Y axis must be a number.
+    y_axis_NaN: The Y axis must be a number.
     y_axis_conditional_one: The value for condition
     y_axis_conditional_two: must be a number.
   linechart:

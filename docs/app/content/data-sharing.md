@@ -10,6 +10,13 @@
 
 [[toc]]
 
+<!--
+@TODO
+Create a :::tip Before You Begin
+getting-started > intro-tutorial
+configuration > users-roles-permissions
+-->
+
 ## What's a Share?
 
 In a given Project, some Collections will likely be hidden for the Public as well as other Roles. There may be cases
@@ -28,10 +35,9 @@ permissions. We welcome any [pull-requests](/contributing/introduction/) to addr
 
 ::: warning Users, Roles and Permissions!
 
-You will need to understand how
-[Users, Roles, and Permissions](/configuration/users-roles-permissions/#configuring-permissions) work in Directus to
-configure Shares properly. That said, if you're unfamiliar with those concepts, it is quite reasonable to learn them in
-tandem with Data Sharing.
+You will need to understand how [Users, Roles, and Permissions](/configuration/users-roles-permissions) work in Directus
+to configure Shares properly. That said, if you're unfamiliar with those concepts, it is quite reasonable to learn them
+in tandem with Data Sharing.
 
 :::
 
@@ -48,16 +54,13 @@ tandem with Data Sharing.
 4. Click the Shares button in the Sidebar.
 5. From the dropdown, click "New Share".
 6. Fill in the Share Options. Everything on the [Share Options Menu](#share-options-menu) is optional, but please note:
-
    - Without a name, it will be harder to remember the context/reason for the Share, especially with multiple shares on
      a single Item.
    - If no Role is selected, it defaults to Public permissions, which provides no real benefit since anyone can access
      Items available to Public.
    - The other access constraints are totally optional.
-
 7. Click <span mi btn>check</span> in the Menu Header once you have set a name, a Role and constraints. You will see
    your new Share under "Shares" in the Sidebar.
-
 8. Click the <span mi icon>more_horiz</span> button on the right side of your Share.
 
 ![copy send edit delete shares menu](https://cdn.directus.io/docs/v9/app-guide/content/data-sharing/data-sharing-20220217A/copy-send-edit-delete-shares-menu-20220217A.webp)
@@ -92,15 +95,21 @@ or incognito tab.
 
 ## Creating and Viewing Shares
 
+<!--
+@TODO
+configuration > users-roles-permissions
+getting-started > intro-tutorial
+-->
+
 A User's ability to create shares will be based on their Role's permissions. If you are an `Administrator`,
-_congratulations_! You can share any Item you want. However, other Roles created will likely have limits set on their
+_congratulations!_ You can share any Item you want. However, other Roles created will likely have limits set on their
 Share permissions.
 
 Any given Share will inherit the same read permissions as the Role it was associated with in the Share Options Menu.
 
 This system allows for absolutely granular configuration options on Shares... _but it also means you'll need to
-understand [Users, Roles, and Permissions](/configuration/users-roles-permissions/#configuring-permissions) thoroughly
-to use Shares properly_. Here are some highlights of what you can do:
+understand [Users, Roles, and Permissions](/configuration/users-roles-permissions/) thoroughly to use Shares properly_.
+Here are some highlights of what you can do:
 
 - Set the Collections a Role can view or share.
 - Filter for specific Items a Role can view or share.
