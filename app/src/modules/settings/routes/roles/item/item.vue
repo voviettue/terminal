@@ -39,7 +39,14 @@
 				</v-card>
 			</v-dialog>
 
-			<v-button v-tooltip.bottom="t('invite_users')" rounded icon secondary @click="userInviteModalActive = true">
+			<v-button
+				v-if="canInviteUsers"
+				v-tooltip.bottom="t('invite_users')"
+				rounded
+				icon
+				secondary
+				@click="userInviteModalActive = true"
+			>
 				<v-icon name="person_add" />
 			</v-button>
 
@@ -99,19 +106,19 @@
 </template>
 
 <script lang="ts">
+import { computed, defineComponent, ref, toRefs } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { defineComponent, computed, toRefs, ref } from 'vue';
 
-import SettingsNavigation from '../../../components/navigation.vue';
-import { useRouter } from 'vue-router';
-import RevisionsDrawerDetail from '@/views/private/components/revisions-drawer-detail';
-import useItem from '@/composables/use-item';
-import { useUserStore } from '@/stores/';
-import RoleInfoSidebarDetail from './components/role-info-sidebar-detail.vue';
-import PermissionsOverview from './components/permissions-overview.vue';
-import UsersInvite from '@/views/private/components/users-invite';
-import useShortcut from '@/composables/use-shortcut';
 import useEditsGuard from '@/composables/use-edits-guard';
+import useItem from '@/composables/use-item';
+import useShortcut from '@/composables/use-shortcut';
+import { usePermissionsStore, useServerStore, useUserStore } from '@/stores/';
+import RevisionsDrawerDetail from '@/views/private/components/revisions-drawer-detail';
+import UsersInvite from '@/views/private/components/users-invite';
+import { useRouter } from 'vue-router';
+import SettingsNavigation from '../../../components/navigation.vue';
+import PermissionsOverview from './components/permissions-overview.vue';
+import RoleInfoSidebarDetail from './components/role-info-sidebar-detail.vue';
 
 export default defineComponent({
 	name: 'RolesItem',
@@ -136,6 +143,8 @@ export default defineComponent({
 		const router = useRouter();
 
 		const userStore = useUserStore();
+		const permissionsStore = usePermissionsStore();
+		const serverStore = useServerStore();
 		const userInviteModalActive = ref(false);
 		const { primaryKey } = toRefs(props);
 
@@ -170,6 +179,22 @@ export default defineComponent({
 
 		const { confirmLeave, leaveTo } = useEditsGuard(hasEdits);
 
+		const canInviteUsers = computed(() => {
+			if (serverStore.auth.disableDefault === true) return false;
+
+			const isAdmin = !!userStore.currentUser?.role?.admin_access;
+			if (isAdmin) return true;
+
+			const usersCreatePermission = permissionsStore.permissions.find(
+				(permission) => permission.collection === 'directus_users' && permission.action === 'create'
+			);
+			const rolesReadPermission = permissionsStore.permissions.find(
+				(permission) => permission.collection === 'directus_roles' && permission.action === 'read'
+			);
+
+			return !!usersCreatePermission && !!rolesReadPermission;
+		});
+
 		return {
 			t,
 			item,
@@ -189,6 +214,7 @@ export default defineComponent({
 			confirmLeave,
 			leaveTo,
 			discardAndLeave,
+			canInviteUsers,
 		};
 
 		/**

@@ -80,7 +80,7 @@
 							v-if="imageData"
 							clickable
 							:active="aspectRatio === imageData.width / imageData.height"
-							@click="aspectRatio = imageData.width / imageData.height"
+							@click="setAspectRatio"
 						>
 							<v-list-item-icon><v-icon name="crop_original" /></v-list-item-icon>
 							<v-list-item-content>{{ t('original') }}</v-list-item-content>
@@ -96,7 +96,7 @@
 					{{ n(imageData.width) }}x{{ n(imageData.height) }}
 					<template v-if="imageData.width !== newDimensions.width || imageData.height !== newDimensions.height">
 						->
-						{{ n(newDimensions.width) }}x{{ n(newDimensions.height) }}
+						{{ n(newDimensions.width ?? 0) }}x{{ n(newDimensions.height ?? 0) }}
 					</template>
 				</div>
 
@@ -115,16 +115,15 @@
 </template>
 
 <script lang="ts">
+import api, { addTokenToURL } from '@/api';
+import { computed, defineComponent, nextTick, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { defineComponent, ref, watch, computed, reactive, nextTick } from 'vue';
-import api from '@/api';
 
-import Cropper from 'cropperjs';
-import { nanoid } from 'nanoid';
-import throttle from 'lodash/throttle';
-import { unexpectedError } from '@/utils/unexpected-error';
-import { addTokenToURL } from '@/api';
 import { getRootPath } from '@/utils/get-root-path';
+import { unexpectedError } from '@/utils/unexpected-error';
+import Cropper from 'cropperjs';
+import throttle from 'lodash/throttle';
+import { nanoid } from 'nanoid';
 
 type Image = {
 	type: string;
@@ -214,6 +213,7 @@ export default defineComponent({
 			newDimensions,
 			dragMode,
 			cropping,
+			setAspectRatio,
 		};
 
 		function useImage() {
@@ -442,6 +442,12 @@ export default defineComponent({
 			function reset() {
 				cropperInstance.value?.reset();
 				dragMode.value = 'move';
+			}
+		}
+
+		function setAspectRatio() {
+			if (imageData.value) {
+				aspectRatio.value = imageData.value.width / imageData.value.height;
 			}
 		}
 	},
