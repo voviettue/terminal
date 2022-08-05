@@ -77,8 +77,8 @@
 
 <script lang="ts">
 import { useElementSize } from '@/composables/use-element-size';
-import useFormFields from '@/composables/use-form-fields';
-import { useFieldsStore } from '@/stores/';
+import { useFormFields } from '@/composables/use-form-fields';
+import { useFieldsStore } from '@/stores/fields';
 import { applyConditions } from '@/utils/apply-conditions';
 import { extractFieldFromFunction } from '@/utils/extract-field-from-function';
 import { Field, ValidationError } from '@directus/shared/types';
@@ -387,7 +387,11 @@ export default defineComponent({
 
 			if (field.field in (props.modelValue || {})) {
 				const newEdits = { ...props.modelValue };
-				delete newEdits[field.field];
+				if (props.initialValues && field.field in props.initialValues) {
+					newEdits[field.field] = props.initialValues[field.field];
+				} else {
+					delete newEdits[field.field];
+				}
 				emit('update:modelValue', newEdits);
 			}
 		}
