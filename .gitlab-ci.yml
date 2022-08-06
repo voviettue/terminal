@@ -37,24 +37,27 @@ packing:
       - dist/
     when: on_success
   only:
-    - tags
-    - TAG_VERSION_REGEX
+    refs:
+      - tags
+      - TAG_VERSION_REGEX
+    changes:
+      - pnpm-lock.yaml
 
 build:
   image: docker:20
   stage: delivery
+  variables:
+    AWS_PROFILE: catex
+    AWS_REGION: eu-north-1
   services:
     - docker:20-dind
   before_script:
-    - AWS_ACCESS_KEY_ID=$CATEX_AWS_ACCESS_KEY_ID
-    - AWS_DEFAULT_REGION=$CATEX_AWS_DEFAULT_REGION
-    - AWS_SECRET_ACCESS_KEY=$CATEX_AWS_SECRET_ACCESS_KEY
     - apk add --no-cache python3 py3-pip
     - pip install awscli
-    - docker login -u AWS -p $(aws ecr get-login-password) $REGISTRY
+    - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $REGISTRY
   script:
-    - docker build --no-cache -t $REGISTRY/$IMAGE:$CI_COMMIT_BRANCH --build-arg -f ./docker/Dockerfile .
-    - docker push $REGISTRY/$IMAGE:$CI_COMMIT_BRANCH
+    - docker build --no-cache -t $REGISTRY/$IMAGE:$CI_COMMIT_TAG -f ./docker/Dockerfile .
+    - docker push $REGISTRY/$IMAGE:$CI_COMMIT_TAG
   dependencies:
     - packing
   cache: []
