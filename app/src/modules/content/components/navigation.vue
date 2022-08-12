@@ -65,7 +65,7 @@ export default defineComponent({
 			const shownCollections = showHidden.value ? collectionsStore.allCollections : collectionsStore.visibleCollections;
 			return orderBy(
 				shownCollections.filter((collection) => {
-					return isNil(collection?.meta?.group);
+					return isNil(collection?.meta?.group) && !collection?.meta?.system;
 				}),
 				['meta.sort', 'collection']
 			);

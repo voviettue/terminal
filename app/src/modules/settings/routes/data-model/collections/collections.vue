@@ -135,9 +135,7 @@ export default defineComponent({
 		const collections = computed(() => {
 			return translate(
 				sortBy(
-					collectionsStore.collections.filter(
-						(collection) => collection.collection.startsWith('directus_') === false && collection.meta
-					),
+					collectionsStore.collections.filter((collection) => collection.meta && !collection.meta.system),
 					['meta.sort', 'collection']
 				)
 			);

@@ -26,6 +26,7 @@ export type CollectionMeta = {
 	sort: number | null;
 	group: string | null;
 	collapse: 'open' | 'closed' | 'locked';
+	system?: boolean;
 };
 
 export interface Collection {

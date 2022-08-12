@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { ForbiddenException } from '../exceptions';
 import { respond } from '../middleware/respond';
 import { validateBatch } from '../middleware/validate-batch';
+import { hiddenCollections } from '../middleware/hidden-collections';
 import { CollectionsService, MetaService } from '../services';
 import { Item } from '../types';
 import asyncHandler from '../utils/async-handler';
@@ -56,8 +57,8 @@ const readHandler = asyncHandler(async (req, res, next) => {
 	return next();
 });
 
-router.get('/', validateBatch('read'), readHandler, respond);
-router.search('/', validateBatch('read'), readHandler, respond);
+router.get('/', validateBatch('read'), readHandler, hiddenCollections, respond);
+router.search('/', validateBatch('read'), readHandler, hiddenCollections, respond);
 
 router.get(
 	'/:collection',
