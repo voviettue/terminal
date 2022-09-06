@@ -71,7 +71,7 @@
 				v-model="internalEdits"
 				:disabled="disabled"
 				:loading="loading"
-				:initial-values="item"
+				:initial-values="initialValues"
 				:primary-key="primaryKey"
 				:fields="fields"
 				:validation-errors="!junctionField ? validationErrors : undefined"
@@ -239,7 +239,7 @@ function useFileField() {
 	const fileField = computed(() => {
 		if (!initialValues.value?.filesize || !initialValues.value?.type) return null;
 
-		const fileData = item.value;
+		const fileData = initialValues.value;
 		if (!fileData) return null;
 
 		const src = addTokenToURL(getRootPath() + `assets/${fileData.id}?key=system-large-contain`);
