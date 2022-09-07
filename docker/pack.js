@@ -13,6 +13,9 @@ const projectPackageJson = {
 	private: true,
 	description: 'Directus Project',
 	dependencies: apiPackageJson.optionalDependencies,
+	scripts: {
+		postinstall: 'node post-install.js',
+	},
 };
 
 const directusPackage = list.find((list) => list.name === 'directus');

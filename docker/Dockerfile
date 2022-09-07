@@ -6,7 +6,14 @@ ARG TARGETPLATFORM
 
 WORKDIR /directus
 COPY /dist .
+COPY /docker/post-install.js ./post-install.js
 
+RUN \
+  # Create data directories
+  mkdir -p \
+    database \
+    extensions \
+    uploads
 RUN \
   if [ "$TARGETPLATFORM" = 'linux/arm64' ]; then \
   apk --no-cache add \
@@ -52,13 +59,6 @@ WORKDIR /directus
 RUN echo "update-notifier=false" >> ~/.npmrc
 
 COPY --from=builder --chown=node:node /directus .
-
-RUN \
-  # Create data directories
-  mkdir -p \
-    database \
-    extensions \
-    uploads
 
 # Expose data directories as volumes
 VOLUME \
