@@ -1,7 +1,7 @@
 <template>
 	<div v-if="type && !imgError" class="file-preview" :class="{ modal: inModal, small: isSmall, svg: isSVG }">
 		<div v-if="type === 'image'" class="image" @click="$emit('click')">
-			<v-image :src="src" :width="width" :height="height" :alt="title" @error="imgError = true" />
+			<v-image :src="authenticatedSrc" :width="width" :height="height" :alt="title" @error="imgError = true" />
 		</div>
 
 		<div v-else-if="type === 'video'" class="video">
@@ -11,7 +11,7 @@
 		<audio v-else-if="type === 'audio'" controls :src="authenticatedSrc" />
 
 		<div v-else-if="type === 'pdf'" class="pdf-viewer">
-			<iframe :src="src" frameborder="0"></iframe>
+			<iframe :src="authenticatedSrc" frameborder="0"></iframe>
 		</div>
 
 		<div v-else class="fallback">
