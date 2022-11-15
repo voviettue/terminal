@@ -86,8 +86,8 @@ export default defineComponent({
 			return [
 				{
 					icon: 'feedback',
-					name: t('submit_feedback'),
-					href: `https://trello.com/b/RkgTZd9P/terminal-business-systems-roadmap`,
+					name: t('submit_ticket'),
+					href: `mailto:support@catex.se`,
 					outline: true,
 				},
 				// {

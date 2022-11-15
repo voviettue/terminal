@@ -238,12 +238,7 @@
 						class="page-description"
 					/>
 				</sidebar-detail>
-				<sidebar-link
-					path="https://trello.com/b/RkgTZd9P/terminal-business-systems-roadmap"
-					icon="feedback"
-					:title="t('submit_feedback')"
-					close
-				/>
+				<sidebar-link path="mailto:support@catex.se" icon="feedback" :title="t('submit_ticket')" close />
 				<layout-sidebar-detail v-model="layout">
 					<component :is="`layout-options-${layout || 'tabular'}`" v-bind="layoutState" />
 				</layout-sidebar-detail>

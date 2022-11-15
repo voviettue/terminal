@@ -178,12 +178,7 @@
 			<sidebar-detail icon="info_outline" :title="t('information')" close>
 				<div v-md="t('page_help_collections_item')" class="page-description" />
 			</sidebar-detail>
-			<sidebar-link
-				path="https://trello.com/b/RkgTZd9P/terminal-business-systems-roadmap"
-				icon="feedback"
-				:title="t('submit_feedback')"
-				close
-			/>
+			<sidebar-link path="mailto:support@catex.se" icon="feedback" :title="t('submit_ticket')" close />
 			<revisions-drawer-detail
 				v-if="
 					isNew === false &&
