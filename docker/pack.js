@@ -27,9 +27,9 @@ if (!existsSync('dist')) {
 const distFolder = path.resolve(__dirname, '..', 'dist');
 
 function addPackageRecursive(package) {
-	const tarName = String(execSync(`pnpm -F ${package.name} exec pnpm pack --pack-destination ${distFolder}`)).trim();
+	const tarName = path.basename(String(execSync(`pnpm -F ${package.name} exec pnpm pack --pack-destination ${distFolder}`)).trim());
 
-	projectPackageJson.dependencies[package.name] = `file:${tarName}`;
+	projectPackageJson.dependencies[package.name] = `file:./${tarName}`;
 
 	const packageJson = require(path.join(package.path, 'package.json'));
 
