@@ -47,6 +47,8 @@ RUN \
   # Add support for specifying the timezone of the container
   # using the "TZ" environment variable.
   tzdata \
+  zip \
+  curl \
   # Create directory for Directus with corresponding ownership
   # (can be omitted on newer Docker versions since WORKDIR below will do the same)
   && mkdir /directus && chown node:node /directus
