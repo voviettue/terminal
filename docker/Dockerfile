@@ -53,6 +53,7 @@ RUN \
   zip \
   curl \
   libc6-compat \
+  gcompat \
 
   # Create directory for Directus with corresponding ownership
   # (can be omitted on newer Docker versions since WORKDIR below will do the same)
