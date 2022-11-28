@@ -54,6 +54,7 @@ RUN \
   curl \
   libc6-compat \
   gcompat \
+  groff \
 
   # Create directory for Directus with corresponding ownership
   # (can be omitted on newer Docker versions since WORKDIR below will do the same)
