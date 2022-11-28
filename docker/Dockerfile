@@ -1,13 +1,11 @@
+# --- STAGE ---
+# BUILD NODE APPLICATION
 ARG NODE_VERSION=16-alpine
-
 FROM node:${NODE_VERSION} as builder
-
 ARG TARGETPLATFORM
-
 WORKDIR /directus
 COPY /dist .
 COPY /docker/post-install.js ./post-install.js
-
 RUN \
   # Create data directories
   mkdir -p \
@@ -24,14 +22,12 @@ RUN \
 RUN npm i --only=production --no-package-lock
 RUN rm *.tgz
 
-# Directus image
+# --- STAGE ---
+# DIRECTUS MAIN IMAGE
 FROM node:${NODE_VERSION}
-
 ARG VERSION
 ARG REPOSITORY=directus/directus
-
 LABEL directus.version="${VERSION}"
-
 # Default environment variables
 # (see https://docs.directus.io/reference/environment-variables/)
 ENV \
@@ -39,7 +35,6 @@ ENV \
   DB_FILENAME="/directus/database/database.sqlite" \
   EXTENSIONS_PATH="/directus/extensions" \
   STORAGE_LOCAL_ROOT="/directus/uploads"
-
 RUN \
   # Upgrade system and install 'ssmtp' to be able to send mails
   apk upgrade --no-cache && apk add --no-cache \
@@ -49,24 +44,14 @@ RUN \
   # using the "TZ" environment variable.
   tzdata \
 
-  # Add some of generic libraries
-  zip \
-  curl \
-  libc6-compat \
-  gcompat \
-  groff \
-
   # Create directory for Directus with corresponding ownership
   # (can be omitted on newer Docker versions since WORKDIR below will do the same)
   && mkdir /directus && chown node:node /directus
-
 # Switch to user 'node' and directory '/directus'
 USER node
 WORKDIR /directus
-
 # disable npm update warnings
 RUN echo "update-notifier=false" >> ~/.npmrc
-
 COPY --from=builder --chown=node:node /directus .
 
 # Expose data directories as volumes
