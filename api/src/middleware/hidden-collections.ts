@@ -9,7 +9,10 @@ export const hiddenCollections: RequestHandler = asyncHandler(async (req, res, n
 				return collection;
 			}
 
-			collection.meta.system = !!prefixes.some((prefix: string) => collection.collection.startsWith(prefix));
+			if (collection.meta) {
+				collection.meta.system = !!prefixes.some((prefix: string) => collection.collection.startsWith(prefix));
+			}
+
 			return collection;
 		});
 	}
